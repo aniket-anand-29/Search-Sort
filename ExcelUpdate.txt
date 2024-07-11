@@ -7,8 +7,8 @@ Sub RemoveAndReorderColumns()
     Dim j As Long
     
     ' Specify the columns to keep
-    columnsToKeep = Array("A", "C", "E")  ' Example columns (letters)
-    columnsOrder = Array("C", "E", "A")   ' Desired order (letters)
+    columnsToKeep = Array("B", "C", "E", "F", "L", "N", "R", "T")  ' Columns to keep (letters)
+    columnsOrder = Array("B", "C", "E", "F", "L", "N", "R", "T")   ' Desired order (letters)
 
     ' Convert column letters to numbers
     For i = LBound(columnsToKeep) To UBound(columnsToKeep)
