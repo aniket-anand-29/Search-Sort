@@ -2,7 +2,7 @@ Sub RemoveAndReorderColumns()
     Dim ws As Worksheet
     Dim columnsToKeep As Variant
     Dim columnsOrder As Variant
-    Dim col As Range
+    Dim colIndex As Variant
     Dim i As Long
     Dim j As Long
     
@@ -10,20 +10,25 @@ Sub RemoveAndReorderColumns()
     columnsToKeep = Array("A", "C", "E")  ' Example columns (letters)
     columnsOrder = Array("C", "E", "A")   ' Desired order (letters)
 
+    ' Convert column letters to numbers
+    For i = LBound(columnsToKeep) To UBound(columnsToKeep)
+        columnsToKeep(i) = Columns(columnsToKeep(i)).Column
+    Next i
+    
     ' Loop through each worksheet
     For Each ws In ThisWorkbook.Worksheets
         ' Remove columns not in columnsToKeep
         For i = ws.UsedRange.Columns.Count To 1 Step -1
-            If IsError(Application.Match(ws.Cells(1, i).Address(False, False), columnsToKeep, 0)) Then
+            If IsError(Application.Match(ws.Cells(1, i).Column, columnsToKeep, 0)) Then
                 ws.Columns(i).Delete
             End If
         Next i
-
+        
         ' Reorder columns according to columnsOrder
         For i = LBound(columnsOrder) To UBound(columnsOrder)
-            j = Application.Match(columnsOrder(i), ws.Rows(1), 0)
-            If Not IsError(j) Then
-                ws.Columns(j).Cut
+            colIndex = Application.Match(columnsOrder(i), ws.Rows(1), 0)
+            If Not IsError(colIndex) Then
+                ws.Columns(colIndex).Cut
                 ws.Columns(i).Insert Shift:=xlToRight
             End If
         Next i
